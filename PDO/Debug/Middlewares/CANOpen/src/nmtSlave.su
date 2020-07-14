@@ -1,0 +1,2 @@
+nmtSlave.c:44:6:proceedNMTstateChange	24	static
+nmtSlave.c:118:6:slaveSendBootUp	32	static

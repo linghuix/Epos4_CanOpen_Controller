@@ -1,0 +1,7 @@
+app.c:31:6:Task_Start	16	static
+app.c:62:6:CANOpen_App_Init	32	static
+app.c:96:6:Epos_Task	16	static
+app.c:109:6:CANRcv_Task	40	static
+app.c:146:6:CANSend_Task	24	static
+app.c:172:6:Remote_App_Init	32	static
+app.c:186:6:RemoteController_Task	16	static

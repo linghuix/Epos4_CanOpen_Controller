@@ -1,0 +1,6 @@
+states.c:52:13:getState	16	static
+states.c:63:6:canDispatch	24	static
+states.c:138:6:switchCommunicationState	16	static
+states.c:159:6:setState	48	static
+states.c:228:6:getNodeId	16	static
+states.c:239:6:setNodeId	24	static

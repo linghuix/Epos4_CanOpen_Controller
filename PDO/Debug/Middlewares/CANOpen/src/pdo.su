@@ -1,0 +1,16 @@
+pdo.c:47:6:buildPDO	96	static
+pdo.c:115:6:sendPDOrequest	48	static
+pdo.c:163:6:proceedPDO	112	static
+pdo.c:421:6:CopyBits	24	static
+pdo.c:484:13:sendPdo	24	static
+pdo.c:503:1:sendPDOevent	16	static
+pdo.c:519:1:sendOnePDOevent	56	static
+pdo.c:610:1:PDOEventTimerAlarm	16	static
+pdo.c:628:1:PDOInhibitTimerAlarm	16	static
+pdo.c:639:1:_RxPDO_EventTimers_Handler	16	static
+pdo.c:656:1:_sendPDOevent	56	static
+pdo.c:793:1:TPDO_Communication_Parameter_Callback	40	static
+pdo.c:837:1:PDOInit	32	static
+pdo.c:874:1:PDOStop	32	static
+pdo.c:903:1:PDOEnable	24	static
+pdo.c:920:1:PDODisable	24	static

@@ -1,0 +1,3 @@
+func_can.c:10:7:MX_CANx_send	32	static
+func_can.c:19:7:MX_CANx_get	32	static
+func_can.c:27:6:CAN_Start	16	static

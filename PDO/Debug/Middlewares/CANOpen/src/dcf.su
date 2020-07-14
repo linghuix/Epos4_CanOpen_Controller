@@ -1,0 +1,9 @@
+dcf.c:59:6:start_node	16	static
+dcf.c:75:6:check_and_start_node	16	static
+dcf.c:98:6:start_and_seek_node	24	static
+dcf.c:117:13:CheckSDOAndContinue	40	static
+dcf.c:181:6:init_consise_dcf	24	static
+dcf.c:203:6:get_next_DCF_data	40	static
+dcf.c:249:13:write_consise_dcf_next_entry	64	static
+dcf.c:271:13:read_consise_dcf_next_entry	48	static
+dcf.c:290:6:SaveNode	48	static

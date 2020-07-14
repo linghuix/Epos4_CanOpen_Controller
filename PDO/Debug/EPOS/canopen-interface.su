@@ -1,0 +1,12 @@
+canopen-interface.c:11:7:Edit_Dict	56	static
+canopen-interface.c:29:6:_preOperational	16	static
+canopen-interface.c:36:6:_initialisation	16	static
+canopen-interface.c:42:6:_operational	16	static
+canopen-interface.c:47:6:_stopped	16	static
+canopen-interface.c:64:6:_post_TPDO	24	static
+canopen-interface.c:122:6:_post_sync	16	static
+canopen-interface.c:137:6:_heartbeatError	16	static
+canopen-interface.c:144:6:_post_SlaveBootup	16	static
+canopen-interface.c:145:6:_post_SlaveStateChange	16	static
+canopen-interface.c:146:6:_nodeguardError	16	static
+canopen-interface.c:155:6:_post_emcy	16	static

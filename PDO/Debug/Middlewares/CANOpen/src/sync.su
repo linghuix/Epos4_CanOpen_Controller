@@ -1,0 +1,7 @@
+sync.c:62:6:SyncAlarm	16	static
+sync.c:77:7:OnCOB_ID_SyncUpdate	24	static
+sync.c:90:6:startSYNC	24	static
+sync.c:115:6:stopSYNC	16	static
+sync.c:130:6:sendSYNCMessage	32	static
+sync.c:151:6:sendSYNC	24	static
+sync.c:166:6:proceedSYNC	24	static

@@ -1,0 +1,7 @@
+emcy.c:57:7:OnNumberOfErrorsUpdate	32	static
+emcy.c:79:6:emergencyInit	16	static
+emcy.c:91:6:emergencyStop	16	static
+emcy.c:106:6:sendEMCY	40	static
+emcy.c:136:6:EMCY_setError	40	static
+emcy.c:194:6:EMCY_errorRecovered	24	static
+emcy.c:238:6:proceedEMCY	40	static

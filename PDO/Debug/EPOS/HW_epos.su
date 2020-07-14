@@ -1,0 +1,13 @@
+HW_epos.c:24:6:Epos_NodeEnable	16	static
+HW_epos.c:66:6:EPOS_Reset	16	static
+HW_epos.c:73:6:EPOS_Start	16	static
+HW_epos.c:85:6:Epos_SpeedSet	16	static
+HW_epos.c:93:6:PM_SetAngle	16	static
+HW_epos.c:102:6:Epos_PosSet	16	static
+HW_epos.c:133:6:speed_Task	16	static
+HW_epos.c:152:6:pos_Task	16	static
+HW_epos.c:168:6:Epos_ControlTask	8	static
+HW_epos.c:181:6:Epos_ReceiveDate	8	static
+HW_epos.c:197:6:State	8	static
+HW_epos.c:224:6:Epos_Conroller_TIMBack	8	static
+HW_epos.c:243:6:Node_Initial_Postion	4	static
