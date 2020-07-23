@@ -1,2 +1,0 @@
-conf_gpio.c:17:6:GPIO_Config	8	static
-conf_gpio.c:28:6:MX_GPIO_output_Init	32	static

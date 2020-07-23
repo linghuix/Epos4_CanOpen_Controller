@@ -16,7 +16,6 @@
 
 void _preOperational(CO_Data* d){
 
-//	uint32_t data;
 	MSG("complete preOperational\r\n");
 
 }
@@ -53,7 +52,7 @@ void sin_cos_test (CO_Data* d);
 
 void _post_TPDO(CO_Data* d)
 {
-	assive(d);
+	//assive(d);
 	//sin_cos_test(d);
 }
 
@@ -71,7 +70,8 @@ uint16_t endP = 0;
 uint8_t Index = 0;
 int x=0, temp_x;						//extern int x=0;语法错误
 
-extern INTEGER32 Pos_Actual_Val, Pos_Actual_Val_node3, Pos_Actual_Val_node4, Pos_Actual_Val_node5;
+extern INTEGER32 Pos_Actual_Val_node1, Pos_Actual_Val_node2, Pos_Actual_Val_node3, Pos_Actual_Val_node4, Pos_Actual_Val_node5, Pos_Actual_Val_node6;
+extern INTEGER32 Actual_Velocity_VALUE_node1, Actual_Velocity_VALUE_node2, Actual_Velocity_VALUE_node3, Actual_Velocity_VALUE_node4, Actual_Velocity_VALUE_node5, Actual_Velocity_VALUE_node6;
 extern INTEGER16 Current_Actual_Val_node2;
 extern INTEGER32 Pos_SET_VALUE_node3;
 
@@ -126,14 +126,7 @@ void assive (CO_Data* d)
 		for(uint8_t i = 0;i<4;i++){
 			ROW_MSG("%d\t", Position_int[i]);
 		}
-		ROW_MSG("%d\t%d\t%d\t%d\r\n",Pos_Actual_Val,Pos_Actual_Val_node3,Pos_Actual_Val_node4, Pos_Actual_Val_node5);
-	}
-	
-	if(period >= PERIOD){
-		HAL_TIM_Base_Stop_IT(CANOPEN_TIMx_handle);	//关闭定时器
-		period = 5;
-		setState(&TestMaster_Data, Pre_operational);		//停止
-		epos_state = 0;
+		//ROW_MSG("%d\t%d\t%d\t%d\r\n",Pos_Actual_Val,Pos_Actual_Val_node3,Pos_Actual_Val_node4, Pos_Actual_Val_node5);
 	}
 }
 
@@ -141,44 +134,56 @@ Uint32 pos;
 int subI = 0;
 void sin_cos_test (CO_Data* d)
 {
+	pos = (int)(20000*sin(5.0f*3.14f*0.005f*subI));
 	
-	pos = (int)(10000*sin(2.0f*3.14f*0.005f*subI));
+	Uint32 pos1 = pos+1;
+	Uint32 pos2 = pos+2;
+	Uint32 pos3 = pos+3;
+	Uint32 pos4 = pos+4;
+	Uint32 pos5 = pos+5;
 	
-	Edit_Dict(d , 0x20620020, 0x00, &pos);
-	Edit_Dict(d , 0x20630020, 0x00, &pos);
-	Edit_Dict(d , 0x20640020, 0x00, &pos);
-	Edit_Dict(d , 0x20650020, 0x00, &pos);
+	Edit_Dict(d , 0x20610020, 0x00, &pos);
+	Edit_Dict(d , 0x20620020, 0x00, &pos1);
+	Edit_Dict(d , 0x20630020, 0x00, &pos2);
+	Edit_Dict(d , 0x20640020, 0x00, &pos3);
+	Edit_Dict(d , 0x20650020, 0x00, &pos4);
+	Edit_Dict(d , 0x20660020, 0x00, &pos5);
 	
 	subI++;
-	ROW_MSG("%d\t%d\t%d\t%d\t%d\r\n",Pos_Actual_Val,Pos_Actual_Val_node3,Pos_Actual_Val_node4, Pos_Actual_Val_node5,pos);
+	ROW_MSG("%d\t%d\t%d\t%d\t%d\t%d\t%d\t\t",Pos_Actual_Val_node1,Pos_Actual_Val_node2,Pos_Actual_Val_node3, Pos_Actual_Val_node4,Pos_Actual_Val_node5,Pos_Actual_Val_node6, pos);
+	ROW_MSG("%d\t%d\t%d\t%d\t%d\t%d\r\n",Actual_Velocity_VALUE_node1,Actual_Velocity_VALUE_node2,Actual_Velocity_VALUE_node3, Actual_Velocity_VALUE_node4,Actual_Velocity_VALUE_node5,Actual_Velocity_VALUE_node6);
+	
 }
 
 void Test_curve (CO_Data* d)
 {
-	UNS32 re;
 	endP = sizeof(test_angle)/sizeof(*test_angle);
-		pos = test_angle[x++];
-		if( x==endP){
-			x = 0;
-		}
-	
-	re = Edit_Dict(d , 0x20620020, 0x00, &pos);
-	re = Edit_Dict(d , 0x20630020, 0x00, &pos);
-	re = Edit_Dict(d , 0x20640020, 0x00, &pos);
-	re = Edit_Dict(d , 0x20650020, 0x00, &pos);
-	
-	if(re != OD_SUCCESSFUL){
-		ERROR(0,"-TPDO update error- 0x%x",re);
+	pos = test_angle[x++]*20;
+	if( x == endP){
+		x = 0;
 	}
 	
-	ROW_MSG("%d\t%d\t%d\t%d\t%d\r\n",Pos_Actual_Val,Pos_Actual_Val_node3,Pos_Actual_Val_node4, Pos_Actual_Val_node5,pos);
+	Uint32 pos1 = pos+1;
+	Uint32 pos2 = pos+2;
+	Uint32 pos3 = pos+3;
+	Uint32 pos4 = pos+4;
+	Uint32 pos5 = pos+5;
+	
+	Edit_Dict(d , 0x20610020, 0x00, &pos) ;
+	Edit_Dict(d , 0x20620020, 0x00, &pos1);
+	Edit_Dict(d , 0x20630020, 0x00, &pos2);
+	Edit_Dict(d , 0x20640020, 0x00, &pos3);
+	Edit_Dict(d , 0x20650020, 0x00, &pos4);
+	Edit_Dict(d , 0x20660020, 0x00, &pos5);
+	
+	ROW_MSG("%d\t%d\t%d\t%d\t%d\r\n",Pos_Actual_Val_node5, Pos_Actual_Val_node6, Actual_Velocity_VALUE_node5, Actual_Velocity_VALUE_node6, pos);
 }
 
 
 /*
  * author lhx
  *
- * @brief : in SYNC
+ * @brief : in SYNC but before _sendPDOevent.
  * Window > Preferences > C/C++ > Editor > Templates.
  */
 
@@ -186,6 +191,23 @@ void _post_sync(CO_Data* d)
 {
 	(void)d;
 	SYNC_MSG("-post_sync-\r\n");
+	//waiting for sensor information
+	//assive(d);
+	sin_cos_test(d);
+	//Test_curve(d);
+
+	#ifdef REMOTE_APP
+    if(Stop == 1){
+         EPOSMaster_PDOStop();
+         PeriodRun = 0;
+    }
+    else if(PeriodRun == 1){
+        if(period > PERIOD){
+            EPOSMaster_PDOStop();
+            Stop = 1;Reset = 1;
+        }
+    }
+	#endif
 }
 
 

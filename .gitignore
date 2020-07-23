@@ -24,3 +24,4 @@
 *.uvopt
 *.flyleaf
 USER/DebugConfig/
+PDO/Keil/Objects/

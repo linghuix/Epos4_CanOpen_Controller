@@ -1,12 +1,15 @@
 #ifndef	_APP_H_
 #define	_APP_H_
 
-#include  "BSP.h"			// Board support package header
-#include  "ucos_ii.h" 		// uC/OS-II header
-#include "debug.h"
+#include "func_CanOpen.h"
 #include "func_epos.h"
 #include "gait.h"
+#include "led.h"
 
+/*************功能裁剪********************/
+//#define REMOTE_APP
+
+   
 /******************任务优先级*******************/
 #define STARTUP_TASK_PRIO     		2
 #define	TASK_canrcv_PRIO			6
@@ -39,5 +42,11 @@ void RemoteController_Task(void *p_arg);
 
 void TIMx_DispatchFromISR(void);
 void CANRcv_DateFromISR(void);
+
+
+#ifdef REMOTE_APP
+extern uint8_t Stop , PeriodRun , Continue , Reset , StopAReset ;
+#endif
+
 
 #endif	//_APP_H_

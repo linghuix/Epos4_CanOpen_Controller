@@ -9,6 +9,7 @@
 #define CANOPEN_INTERFACE_H_
 
 #include "func_epos.h"
+#include "app.h"
 
 #define State_Hook_Enable
 #define Lifgrd_Hook_Enable

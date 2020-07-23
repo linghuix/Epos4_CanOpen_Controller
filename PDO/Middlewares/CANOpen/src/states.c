@@ -145,7 +145,7 @@ void switchCommunicationState(CO_Data* d, s_state_communication *newCommunicatio
 	StartOrStop(csLifeGuard,	lifeGuardInit(d),	lifeGuardStop(d))
 	StartOrStop(csEmergency,	emergencyInit(d),	emergencyStop(d)) 
 	StartOrStop(csPDO,	PDOInit(d),	PDOStop(d))
-	StartOrStop(csBoot_Up,	None,	slaveSendBootUp(d))
+	StartOrStop(csBoot_Up,	None,	slaveSendBootUp(d))		
 }
 
 /*!                                                                                                

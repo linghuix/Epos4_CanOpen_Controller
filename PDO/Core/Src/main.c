@@ -28,9 +28,9 @@ int main(void)
 {
 	BSP_Init();
 	debug_init();
-	CAN_Send_test();
+	//CAN_Send_test();
 
-	/*OSInit();
+	OSInit();
 	MSG("--------------------------------------                   \r\n");
 	MSG("   --------------------------------------                   \r\n");
 	MSG("      --------------------------------------                   \r\n");
@@ -47,8 +47,9 @@ int main(void)
 
 	while(1){
 		printf("system not start !");
-	}*/
- }
+	}
+	//return 0;
+}
 
 
 /*

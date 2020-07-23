@@ -6,57 +6,59 @@
  * 描述 
  * 调用  
  */
-uint8_t NODE_ID[] = {2,3,4,5,6,7};                          																//EPOS ID
+uint8_t NODE_ID[] = {6,3,4,5,6,7};                          																//EPOS ID
 Epos Controller1, Controller2, Controller3, Controller4, Controller5, Controller6;        //控制器对
 Epos *Controller[] = {&Controller1, &Controller2, &Controller3, &Controller4, &Controller5, &Controller6};
-uint8_t NumControllers = 4;
-
+uint8_t NumControllers = 1;
 
 
 #include "canopen_interface.h"
 #include "func_CanOpen.h"
 extern uint8_t NumControllers;
-int home[] = {54260, 12077, 20744, 14949};
+int home[] = {0, 0, 0, 0,0,0};
 extern int PERIOD ;
 void EposMaster_Start(void)
 {
 	//uint32_t data[6];
 	Init_MyDict();
+	Uint32 data[6];
 	
 	setState(&TestMaster_Data, Initialisation);
-
+	
 	if (!(*(TestMaster_Data.iam_a_slave)))		//master
 	{
-		EPOS_NMT_Reset();
+		//EPOS_NMT_Reset();
+		//OSTimeDlyHMSM(0, 0, 1, 0);
+		
         Epos_init();
-        Epos_ModeSet();
+        Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
         EPOS_Enable();
 		
-		printf("waiting\r\n");
-		while(PERIOD == 0){
+		//printf("waiting\r\n");
+		/*while(PERIOD == 0){
 			OSTimeDlyHMSM(0, 0,0,5);
-		}
+		}*/
 		
 		for(int i=0;i<NumControllers;i++){
 			//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 700);				//reset speed set slower
-			Epos_PosSet(Controller[i],home[i]);
+			//Epos_PosSet(Controller[i],home[i]);
 		}
 		
 		OSTimeDlyHMSM(0, 0,5,0);
 		
-		EPOS_PDOStart();
+		EPOS_PDOEnter();
 	}
 	
 	/* 验证是否进入位于home */
-	/*for(int i=0;i<NumControllers;i++){
+	for(int i=0;i<NumControllers;i++){
 		data[i] = SDO_Read(Controller[i], Position_actual_value, 0X00);
 		MSG("pos - %x\r\n",data[i]);
 		//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 6000);
 		//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, MAX_P_V);				//reset to previous speed 
-	}*/
+	}
 	
 	/* 验证是否进入 Operational 模式 */
-	/*for(int i=0;i<NumControllers;i++){
+	for(int i=0;i<NumControllers;i++){
 		data[i] = SDO_Read(Controller[i], Statusword, 0X00);
 		MSG("state - %x\r\n",data[i]);
 	}
@@ -70,7 +72,7 @@ void EposMaster_Start(void)
 		//setState(&TestMaster_Data, Pre_operational); //心跳,同步周期协议配置
 		setState(&TestMaster_Data, Operational);
 	//}
-    */
+    
 }
 
 
@@ -100,11 +102,11 @@ void Epos_init(void)
 
 
 /** chose mode for epos4 */
-void Epos_ModeSet(void)
+void Epos_ModeSet(uint8_t mode)
 {
 	//******** 控制模式设置 *******
 	for(int i=0;i<NumControllers;i++){
-		Node_setMode(Controller[i], Cyclic_Synchronous_Position_Mode);
+		Node_setMode(Controller[i], mode);
 	}
 	printf("-----------------------------------------------\r\n");
 	printf("-----------------Mode_set----------------------\r\n");
@@ -136,7 +138,7 @@ void EPOS_NMT_Reset(void)
 }
 
 /* Make Epos's NMT state operation. So we can proceed PDO contorl */
-void EPOS_PDOStart(void)
+void EPOS_PDOEnter(void)
 {
 	printf("-----------------------------------------------\r\n");
 	printf("---------NMT -enter into operation-------------\r\n");
@@ -147,6 +149,25 @@ void EPOS_PDOStart(void)
 }
 
 
+void EPOSMaster_PDOStart(void)
+{
+    HAL_TIM_Base_Start_IT(CANOPEN_TIMx_handle);
+	printf("-----------------------------------------------\r\n");
+	printf("-----------------PDO_Start -------------------\r\n");
+	printf("-----------------------------------------------\r\n");
+	//setState(&TestMaster_Data, Pre_operational); //心跳,同步周期协议配置
+	setState(&TestMaster_Data, Operational);
+}
+
+
+void EPOSMaster_PDOStop(void)
+{
+    HAL_TIM_Base_Stop_IT(CANOPEN_TIMx_handle);
+	setState(&TestMaster_Data, Initialisation);
+	printf("-----------------------------------------------\r\n");
+	printf("-----------------PDO_Stop -------------------\r\n");
+	printf("-----------------------------------------------\r\n");
+} 
 
 /** use SDO protocol to set speed */
 void Epos_SDOSpeedSet(Uint32 speed){

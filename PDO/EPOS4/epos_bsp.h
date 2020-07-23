@@ -15,16 +15,14 @@
 #include <stdint.h>
 
 // driver
-#include <dict.h>
-#include "stm32f1xx_hal.h"
-#include "conf_can.h"
-#include "conf_can.h"
+#include "BSP.h"
 
 // OS
 #include "ucos_ii.h"
 
-// Can open
-#include "canfestival.h"
+// Canopen
+#include <dict.h>
+
 
 
 
@@ -74,15 +72,14 @@ extern Uint32 pos_value_RH;
 /************??*************/
 
 #define PPMODE 0x01
-#define MAX_ACC 30000
-#define MAX_DEC 30000
 #define MODE_NONE 0x00
-#define MAX_F_ERR 20000//500
-#define MAX_P_V 700//2720//5000
-#define QDEC MAX_ACC
 #define ALL 0
 
-
+#define MAX_ACC 30000
+#define MAX_DEC 30000
+#define MAX_F_ERR 40000	//500
+#define MAX_P_V 2000		//2720//5000
+#define QDEC MAX_ACC
 
 enum Profile_Position_Mode
 {
@@ -122,7 +119,7 @@ enum Profile_Velocity_Mode
 	Max_motor_speed
 	Soft_P_Limit_Min = 0x607D0120,  //????
 	Soft_P_Limit_Max = 0x607D0220,  //????
-	Q_deceleration = 0x607F,
+	Q_deceleration = ,
 	*/
 
 	/*COMMAND*/
@@ -274,9 +271,12 @@ enum E_OBJ_MODE
 };
 
 
-enum Epos4_StateCommand
+enum Epos4_StateControlCommand
 {
-    Fault_Reset = 0x80,   //????
+    Fault_Reset = 0x80,   //reference to 2.2.3 Device Control Commands
+	Switch_on_Enable_operation = 0x0F,
+	Shutdown = 0x06,
+	Disable_voltage = 0x0,
 };
 
 
@@ -294,7 +294,7 @@ enum E_OBJ_DICTIONARY
 
     OD_STORE = 0x10100120,      //Save all Parameters. SAVE_Code = 0x73617665,
 
-    OD_CAN_BITRATE = 0x20010010,
+    OD_CAN_BITRATE = 0x20010008,
 };
 
 

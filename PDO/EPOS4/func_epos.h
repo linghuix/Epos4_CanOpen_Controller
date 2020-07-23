@@ -19,9 +19,11 @@ void Node_Initial_Postion(void);
 
 //------
 void Epos_init(void);
-void Epos_ModeSet(void);
+void Epos_ModeSet(uint8_t mode);
 void EPOS_Enable(void);
-
+void EPOS_PDOEnter(void);
+void EPOSMaster_PDOStart(void);
+void EPOSMaster_PDOStop(void);
 
 #define Node_To_Home_Postion(e) Epos_PosSet(e,0)
 #endif

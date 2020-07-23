@@ -127,7 +127,7 @@ UNS8 slaveSendBootUp(CO_Data* d)
 
   /* message configuration */
   {
-	  UNS16 tmp = NODE_GUARD << 7 | *d->bDeviceNodeId; 
+	  UNS16 tmp = NODE_GUARD << 7 | *d->bDeviceNodeId; 	//700+bDeviceNodeId
 	  m.cob_id = UNS16_LE(tmp);
   }
   m.rtr = NOT_A_REQUEST;

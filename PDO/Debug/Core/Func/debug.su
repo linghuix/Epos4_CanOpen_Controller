@@ -1,5 +1,0 @@
-debug.c:35:9:addDebugBuffer	16	static
-debug.c:50:6:getDebugBuffer	16	static
-debug.c:68:5:_write	32	static
-debug.c:116:6:debug_init	8	static
-debug.c:129:6:debug_IRQ	24	static

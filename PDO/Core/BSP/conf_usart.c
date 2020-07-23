@@ -128,7 +128,7 @@ void USART_NVIC_Init(UART_HandleTypeDef* uartHandle)
 {
     if(uartHandle->Instance==USART1)
     {
-		HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+		HAL_NVIC_SetPriority(USART1_IRQn, 3, 0);
 		HAL_NVIC_EnableIRQ(USART1_IRQn);
 
     }

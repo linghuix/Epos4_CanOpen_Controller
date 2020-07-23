@@ -26,6 +26,7 @@ uint8_t SDO_Write(Epos* epos,Uint32 Index_Type,Uint8 SubIndex,Uint32 param)
 	UNS8 SDO_state;
 	UNS16 Index = Index_Type>>16;
 	UNS32 Size = (Index_Type&(UNS32)0xFF)>>3;
+	SubIndex = (Index_Type>>8)&0xFF;
 	UNS8 Type;
 	if(Size == 4){Type = uint32;}
 	if(Size == 2){Type = uint16;}

@@ -5,8 +5,8 @@
  *      Author: test
  */
 
-#ifndef BSP_FUNC_CAN_H_
-#define BSP_FUNC_CAN_H_
+#ifndef _FUNC_CAN_H_
+#define _FUNC_CAN_H_
 
 #include "conf_can.h"
 #include "stdio.h"

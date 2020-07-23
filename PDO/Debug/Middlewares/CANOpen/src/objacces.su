@@ -1,5 +1,0 @@
-objacces.c:45:6:accessDictionaryError	24	static
-objacces.c:98:7:_getODentry	48	static
-objacces.c:180:7:_setODentry	56	static
-objacces.c:277:7:RegisterSetODentryCallBack	32	static
-objacces.c:289:7:_storeODSubIndex	16	static

@@ -16,11 +16,13 @@
 #define MSG_deviceTest(...) 	MYMSG(__VA_ARGS__)
 #define Task_MSG(...) 			MYMSG(__VA_ARGS__)
 #define MMSG(...) 				MYMSG(__VA_ARGS__)
-#define CAN_SEND_MSG(...)		MYMSG(__VA_ARGS__)
+#define CAN_SEND_MSG(...)		//MYMSG(__VA_ARGS__)
 #define CAN_RCV_MSG(...)		//MYMSG(__VA_ARGS__)
-#define TPDO_MSG(...)			MYMSG(__VA_ARGS__)
-#define SYNC_MSG(...)			MYMSG(__VA_ARGS__)
+#define TPDO_MSG(...)			//printf("TPDO: ");MYMSG(__VA_ARGS__)
+#define SYNC_MSG(...)			//printf("SYNC: ");MYMSG(__VA_ARGS__)
 #define ROW_MSG(...)			MYMSG(__VA_ARGS__)					//需要发送到PC等地方进行进一步处理的信息
+#define REMOTE_RECEIVEMSG(...)	printf("REMOTE: ");MYMSG(__VA_ARGS__)
+#define REMOTE_HANDLEMSG(...)	printf("REMOTE_Handle: ");MYMSG(__VA_ARGS__)
 #define ERROR(s,...)			printf("#ERROR %d# ",s);MYMSG(__VA_ARGS__);printf("\t--%s,%d\r\n",__FILE__, __LINE__)	//发送严重错误，必须指明错误语句和地点
 
 /*

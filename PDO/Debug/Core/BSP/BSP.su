@@ -1,2 +1,0 @@
-BSP.c:9:6:BSP_Init	8	static
-BSP.c:22:6:SysTick_init	8	static

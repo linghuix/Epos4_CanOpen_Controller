@@ -1,7 +1,7 @@
 #ifndef __LED_H
 #define	__LED_H
 
-#include <conf_gpio.h>
+#include "BSP.h"	//"conf_gpio.h"
 
 /* the macro definition to trigger the led on or off 
  * 1 - off

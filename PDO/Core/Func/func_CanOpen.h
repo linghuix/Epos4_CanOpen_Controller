@@ -13,9 +13,8 @@
 
 
 /* 包含的头文件 --------------------------------------------------------------*/
-#include "conf_tim.h"
+#include "BSP.h"
 #include "func_can.h"
-#include "app.h"
 
 
 /* 宏定义 --------------------------------------------------------------------*/
@@ -38,9 +37,7 @@
 #define N_MESSAGES 100
 
 /* 函数申明 ------------------------------------------------------------------*/
-
-#include <dict.h>
-#include "ucos_ii.h"
+#include "FUNC.h"
 
 //定义队列消息指针数组,存储的是 void 指针
 extern void *cantxMsgGrp[N_MESSAGES];

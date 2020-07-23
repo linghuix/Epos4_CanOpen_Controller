@@ -1,3 +1,0 @@
-nmtMaster.c:46:6:masterSendNMTstateChange	32	static
-nmtMaster.c:71:6:masterSendNMTnodeguard	32	static
-nmtMaster.c:94:6:masterRequestNodeState	24	static

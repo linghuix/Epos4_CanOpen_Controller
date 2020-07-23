@@ -17,7 +17,6 @@
 
 //G T R Vt
 
-//�������������.c�ļ������
 extern UART_HandleTypeDef huart1;
 uint8_t ch_print;
 uint8_t ch_scanf;

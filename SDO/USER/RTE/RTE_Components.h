@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Epos4_controller' 
+ * Project: 'STM32-DEMO' 
  * Target:  'Target 1' 
  */
 

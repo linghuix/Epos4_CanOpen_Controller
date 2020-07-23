@@ -41,7 +41,10 @@ void Task_Start(void *p_arg)
 	
 	OSStatInit();
 	CANOpen_App_Init();			//CANOpen协议初始化
+	
+	#ifdef REMOTE_APP
 	Remote_App_Init();		// 红外通讯远程信息接收初始化
+	#endif
 
 	while (1){
 		OSTimeDlyHMSM(0, 100,0,0);
@@ -121,7 +124,6 @@ trajectory trajectoryBuffer_1[5];
 void Epos_Task(void *p_arg)
 {
 	//Task_MSG("CANApp_Task ... ");
-	uint32_t data=50;
 	EposMaster_Init();
 	EposMaster_Start();
 	
@@ -129,32 +131,48 @@ void Epos_Task(void *p_arg)
 	
 	for(;;)
 	{
-		if(epos_state == 0){
-			OSTimeDlyHMSM(0, 0,0,800); 		//waiting for PDO controlling process in EPOS end
-			for(int i= 0;i < NumControllers;i++){
-				masterNMT(&TestMaster_Data, Controller[i], NMT_Enter_PreOperational);	//to operation
-				SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 500);				//reset speed set slower
-			}
-			
-			
-			Node_To_Home_Postion(Controller[0]);
-			Node_To_Home_Postion(Controller[1]);
-			Node_To_Home_Postion(Controller[2]);
-			Node_To_Home_Postion(Controller[3]);
-			OSTimeDlyHMSM(0, 0, 5,0); 
-			
-			data = SDO_Read(Controller[0], Position_actual_value, 0X00);
-			MSG("get - %x\r\n",data);
-			data = SDO_Read(Controller[1], Position_actual_value, 0X00);
-			MSG("get - %x\r\n",data);
-			
-			epos_state = 50;
-			
-			/*for(int i= 0;i < NumControllers;i++){
-				Node_DisEn(Controller[i]);
-				SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, MAX_P_V);				//reset to previous speed 
-			}*/
-		}
+	   #ifdef REMOTE_APP
+       if(Stop == 1)
+        {
+            //中断中处理Stop指令，以保持实时性
+		    OSTimeDlyHMSM(0, 0,0,20); 
+            
+            if(Continue == 1)
+            {
+		        EPOSMaster_PDOStart();
+                Stop = 0;
+                PeriodRun = 1;
+                Continue = 0;
+            }
+            else if(Reset == 1)
+            {
+			    OSTimeDlyHMSM(0, 0,0,800); 		//waiting for PDO controlling process in EPOS end
+				for(int i= 0;i < NumControllers;i++){
+					masterNMT(&TestMaster_Data, Controller[i], NMT_Enter_PreOperational);	//to operation
+					SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 500);				//reset speed set slower
+				}
+				
+				Node_To_Home_Postion(Controller[0]);
+				Node_To_Home_Postion(Controller[1]);
+				Node_To_Home_Postion(Controller[2]);
+				Node_To_Home_Postion(Controller[3]);
+				OSTimeDlyHMSM(0, 0, 5,0); 
+				
+				data = SDO_Read(Controller[0], Position_actual_value, 0X00);
+				MSG("get - %x\r\n",data);
+				data = SDO_Read(Controller[1], Position_actual_value, 0X00);
+				MSG("get - %x\r\n",data);
+	            
+				Epos_ModeSet(Cyclic_Synchronous_Position_Mode); //恢复参数
+				//所有全局参数初始化；
+				
+				if(PeriodRun==1){
+					EPOSMaster_PDOStart();
+				}
+            }
+        }
+        #endif
+		
 		OSTimeDlyHMSM(0, 0,0,10); 
 	}
 }
@@ -195,7 +213,9 @@ void CANRcv_Task(void *p_arg)
 
 			if(waiting_sdo == 1){
 				OSSemQuery (CRCV_WAIT_Semp, &sem_data);
-				if(sem_data.OSCnt < 1)		OSSemPost(CRCV_WAIT_Semp);
+				if(sem_data.OSCnt < 1){
+					OSSemPost(CRCV_WAIT_Semp);
+				}
 			}
 		}
 	}
@@ -222,7 +242,7 @@ void CANSend_Task(void *p_arg)
 	}
 }
 
-
+#ifdef REMOTE_APP
 void Remote_App_Init(void)
 {
 	/* 串口配置 */
@@ -251,7 +271,7 @@ void RemoteController_Task(void *p_arg)
 	}
 }
 
-
+uint8_t Stop = 1, PeriodRun = 0, Continue = 0, Reset = 1, StopAReset = 0;
 extern int PERIOD,period;	//canopen_interface.c
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -264,17 +284,37 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			case(0x18):
 				PERIOD = 2;
 				break;
-			case(0x19):
-				PERIOD = 60*60/7;
+			case(0x19):             //"100+"
+				PERIOD = 600;
 				break;
-			case(0x0D):
-				PERIOD = 120*60/7;
+			case(0x0D):             //"200+"
+				PERIOD = 1200;
 				break;
+            case(0x07):             //"-"
+                Reset = 1;
+				REMOTE_RECEIVEMSG("Receive Reset\r\n");
+                break;
+            case(0x15):             //"+"
+                Continue = 1;
+				REMOTE_RECEIVEMSG("Receive Continue\r\n");
+                break;
+            case(0x44):             //"prev"
+                Stop = 1;
+                Reset = 1;
+				REMOTE_RECEIVEMSG("Receive StopAReset\r\n");
+                break;
+            case(0xD9):             //"EQ"
+                Stop = 1;
+				REMOTE_RECEIVEMSG("Receive Stop\r\n");
+                break;
 			default:
 				ERROR(10,"error command 0x%X\r\n",receiveData);
 		}
+        if(PERIOD > 0){
+            PeriodRun = 1;
+			REMOTE_RECEIVEMSG("Receive PeriodRun %d \r\n", PERIOD);
+        }
 	}
-	MYMSG("#%d\t%d\r\n",period,PERIOD);
 	HAL_UART_Receive_IT(&huart2, remoteData,3);
 }
-
+#endif
