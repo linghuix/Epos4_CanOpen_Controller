@@ -103,41 +103,50 @@ void Print(CanRxMsg RxMessage){
 
 
 
-/***未通过实验**/
+/***通过实验**/
+#define RTR_NOAllow (uint32_t)0x1<<30
+#define PDO_NoAllow (uint32_t)0x1<<31
 void Node_PDOConfig(Epos* epos)
 {
     //Receive PDO 1 Parameter
     SDO_Write(epos,0x14000120,0x01,0x200+epos->node_ID); 	//ID与接收的TxPDO对应，实现两者之间的传输
 	SDO_Write(epos,0x14000208,0x01,0x1); 					//ID与接收的TxPDO对应，实现两者之间的传输
-    SDO_Write(epos,0x14010120,0x01,(0x300+epos->node_ID)|((uint32_t)0x1<<31)); 	//unvaild
+    SDO_Write(epos,0x14010120,0x01,(0x300+epos->node_ID)|PDO_NoAllow); 	//unvaild
 	SDO_Write(epos,0x14010208,0x01,0x1); 								//ID与接收的TxPDO对应，实现两者之间的传输
-    SDO_Write(epos,0x14020120,0x01,(0x400+epos->node_ID)|((uint32_t)0x1<<31));
+    SDO_Write(epos,0x14020120,0x01,(0x400+epos->node_ID)|PDO_NoAllow);
 	SDO_Write(epos,0x14020208,0x01,0x1); 
-    SDO_Write(epos,0x14030120,0x01,(0x500+epos->node_ID)|((uint32_t)0x1<<31));
+    SDO_Write(epos,0x14030120,0x01,(0x500+epos->node_ID)|PDO_NoAllow);
 	SDO_Write(epos,0x14030208,0x01,0x1); 
 	
-	SDO_Write(epos,0x16000008,0x01,0x1); 
-	SDO_Write(epos,0x16000120,0x01,0x607A0020); 
+	SDO_Write(epos,0x16000008,0x01,0x0); 					//RxPDO map
+	SDO_Write(epos,0x16000120,0x01,Target_pos); 
+	SDO_Write(epos,0x16000008,0x01,0x1); 					
+
 	
-	SDO_Write(epos,0x18000120,0x01,0x180+epos->node_ID); 
-	SDO_Write(epos,0x18000220,0x01,0x1); 
-	SDO_Write(epos,0x18000310,0x01,10);
-	SDO_Write(epos,0x18000120,0x01,(0x280+epos->node_ID)|((uint32_t)0x1<<31)); 
-	SDO_Write(epos,0x18000220,0x01,0x1); 
-	SDO_Write(epos,0x18000310,0x01,10);
-	SDO_Write(epos,0x18000120,0x01,(0x380+epos->node_ID)|((uint32_t)0x1<<31)); 
-	SDO_Write(epos,0x18000220,0x01,0x1); 
-	SDO_Write(epos,0x18000310,0x01,10);
-	SDO_Write(epos,0x18000120,0x01,(0x480+epos->node_ID)|((uint32_t)0x1<<31)); 
-	SDO_Write(epos,0x18000220,0x01,0x1); 
-	SDO_Write(epos,0x18000310,0x01,10);
+	SDO_Write(epos,0x18000120,0x01,(0x180+epos->node_ID)|RTR_NOAllow); 	//TxPDO
+	SDO_Write(epos,0x18000208,0x01,0x1); 
+	SDO_Write(epos,0x18000310,0x01,1);
 	
-	SDO_Write(epos,0x1A000008,0x01,2); 
+	SDO_Write(epos,0x18010120,0x01,(0x280+epos->node_ID)|PDO_NoAllow|RTR_NOAllow); 
+	SDO_Write(epos,0x18010208,0x01,0x1); 
+	SDO_Write(epos,0x18010310,0x01,1);
+	
+	SDO_Write(epos,0x18020120,0x01,(0x380+epos->node_ID)|PDO_NoAllow|RTR_NOAllow); 
+	SDO_Write(epos,0x18020208,0x01,0x1); 
+	SDO_Write(epos,0x18020310,0x01,1);
+	
+	SDO_Write(epos,0x18030120,0x01,(0x480+epos->node_ID)|PDO_NoAllow|RTR_NOAllow); 
+	SDO_Write(epos,0x18030208,0x01,0x1); 
+	SDO_Write(epos,0x18030310,0x01,1);
+	
+	SDO_Write(epos,0x1A000008,0x01,0); 
 	SDO_Write(epos,0x1A000120,0x01,0x60640020); 
 	SDO_Write(epos,0x1A000220,0x01,0x606C0020);
-	SDO_Write(epos,0x1A010008,0x01,2); 
-	SDO_Write(epos,0x1A020008,0x01,2); 
-	SDO_Write(epos,0x1A030008,0x01,2); 
+	SDO_Write(epos,0x1A000008,0x01,2); 
+	
+	SDO_Write(epos,0x1A010008,0x01,0); 
+	SDO_Write(epos,0x1A020008,0x01,0); 
+	SDO_Write(epos,0x1A030008,0x01,0); 
 }
 
 

@@ -6,7 +6,7 @@
  * 描述 
  * 调用  
  */
-uint8_t NODE_ID[] = {6,3,4,5,6,7};                          																//EPOS ID
+uint8_t NODE_ID[] = {2,3,4,5,6,7};                          																//EPOS ID
 Epos Controller1, Controller2, Controller3, Controller4, Controller5, Controller6;        //控制器对
 Epos *Controller[] = {&Controller1, &Controller2, &Controller3, &Controller4, &Controller5, &Controller6};
 uint8_t NumControllers = 1;
@@ -15,7 +15,7 @@ uint8_t NumControllers = 1;
 #include "canopen_interface.h"
 #include "func_CanOpen.h"
 extern uint8_t NumControllers;
-int home[] = {0, 0, 0, 0,0,0};
+int home[] = {0, 0, 0, 0, 0, 0};
 extern int PERIOD ;
 void EposMaster_Start(void)
 {
@@ -31,6 +31,7 @@ void EposMaster_Start(void)
 		//OSTimeDlyHMSM(0, 0, 1, 0);
 		
         Epos_init();
+		Epos_PDOConfig();
         Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
         EPOS_Enable();
 		
@@ -221,15 +222,18 @@ void SDO_SpeedTest(void){
 
 
 
-void Epos_PDOConfig(void){
-
+void Epos_PDOConfig(void)
+{
     //NMT_Pre(Controller[1], ALL);                        
-    SDO_Read(Controller[1],Statusword,0x00);
+//    SDO_Read(Controller[1],Statusword,0x00);
 
-    Node_PDOConfig(Controller[1]);
-    SDO_Read(Controller[1],0x1400,0x01);
-    SDO_Read(Controller[1],0x1600,0x00);
-    SDO_Read(Controller[1],0x1600,0x01);
+	for(int i=0;i<NumControllers;i++){
+		Node_PDOConfig(Controller[i]);
+	}
+	
+//    SDO_Read(Controller[1],0x1400,0x01);
+//    SDO_Read(Controller[1],0x1600,0x00);
+//    SDO_Read(Controller[1],0x1600,0x01);
     //NMT_Start(Controller[1], ALL);
 }
 

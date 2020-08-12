@@ -25,6 +25,9 @@ void EPOS_PDOEnter(void);
 void EPOSMaster_PDOStart(void);
 void EPOSMaster_PDOStop(void);
 
+
+void Epos_PDOConfig(void);
+
 #define Node_To_Home_Postion(e) Epos_PosSet(e,0)
 #endif
 

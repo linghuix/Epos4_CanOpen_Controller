@@ -81,6 +81,21 @@ extern Uint32 pos_value_RH;
 #define MAX_P_V 2000		//2720//5000
 #define QDEC MAX_ACC
 
+
+enum PDO_Mapping
+{
+//	  Target_pos = 0x607A0020,					//RxPDO
+//    Pos_offset = 0x60B00020,    //optional
+//    Torque_offset = 0x60B20010, //optional for feed forward control.
+//	  Target_torque = 0x60710010,
+
+//	Torque_actual_value = 0x60770010,			//TxPDO
+//    Velocity_actual_value = 0x606C0020,
+//    Position_actual_value = 0x60640020,
+	Current_actual_value = 0x30D10220,
+};
+	
+
 enum Profile_Position_Mode
 {
     Profile_Position_Mode = (uint8_t)(1),//??????
