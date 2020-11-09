@@ -111,7 +111,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                      };
 
 /* index 0x1200 :   SDO server parameter.     Index 1200h-127Fh，Sever SDO Parameter，1200h可选*/
-					UNS8 ServerNumber_0x1200 = 2;
+					UNS8 ServerNumber_0x1200 = 1;
 					UNS32 TestMaster_obj1200_COB_ID_SDO_CS_RX  = 0x600;
                     UNS32 TestMaster_obj1200_COB_ID_SDO_SC_TX = 0x580;
 					subindex TestMaster_Index1200[] = 
