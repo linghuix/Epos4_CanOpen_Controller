@@ -109,16 +109,16 @@ void Print(CanRxMsg RxMessage){
 void Node_PDOConfig(Epos* epos)
 {
     //Receive PDO 1 Parameter
-    SDO_Write(epos,0x14000120,0x01,0x200+epos->node_ID); 	//ID与接收的TxPDO对应，实现两者之间的传输
-	SDO_Write(epos,0x14000208,0x01,0x1); 					//ID与接收的TxPDO对应，实现两者之间的传输
+    SDO_Write(epos,0x14000120,0x01,0x200+epos->node_ID); 				//ID与接收的RxPDO对应，实现两者之间的传输
+	SDO_Write(epos,0x14000208,0x01,0x1); 								//ID与接收的RxPDO对应，实现两者之间的传输
     SDO_Write(epos,0x14010120,0x01,(0x300+epos->node_ID)|PDO_NoAllow); 	//unvaild
-	SDO_Write(epos,0x14010208,0x01,0x1); 								//ID与接收的TxPDO对应，实现两者之间的传输
+	SDO_Write(epos,0x14010208,0x01,0x1); 								//ID与接收的RxPDO对应，实现两者之间的传输
     SDO_Write(epos,0x14020120,0x01,(0x400+epos->node_ID)|PDO_NoAllow);
 	SDO_Write(epos,0x14020208,0x01,0x1); 
     SDO_Write(epos,0x14030120,0x01,(0x500+epos->node_ID)|PDO_NoAllow);
 	SDO_Write(epos,0x14030208,0x01,0x1); 
 	
-	SDO_Write(epos,0x16000008,0x01,0x0); 					//RxPDO map
+	SDO_Write(epos,0x16000008,0x01,0x0); 								//RxPDO map
 	SDO_Write(epos,0x16000120,0x01,Target_pos); 
 	SDO_Write(epos,0x16000008,0x01,0x1); 					
 
@@ -190,7 +190,7 @@ void Node_setMode(Epos* epos, Uint16 mode){
         SDO_Write(epos, Max_motor_speed, 0x00, 2000);					//参考电机手册
 		//SDO_Write(epos, Max_gear_input_speed, 0x03,2000);
 		SDO_Write(epos, Interpolation_Time_index, 0, (uint8_t)-3);
-        SDO_Write(epos, Interpolation_Time_Period_value, 0, 100);			// ms
+        SDO_Write(epos, Interpolation_Time_Period_value, 0, 10);			// ms
         SDO_Write(epos,Max_Acceleration,0x00,MAX_ACC);
 		break;
 
@@ -205,8 +205,18 @@ void Node_setMode(Epos* epos, Uint16 mode){
 		break;
 
 	case(Cyclic_Synchronous_Torque_Mode):
-		SDO_Write(epos, Soft_P_Limit_Min, 0x01, 0x80000000);                //-2147483648
-		SDO_Write(epos, Soft_P_Limit_Max, 0x02, 0x7FFFFFFF);                //2147483647
+        SDO_Write(epos, Nominal_current, 0, 7000);                      // max is 8.73 A
+        SDO_Write(epos, Motor_torque_constant, 0, 136000);              // 136 mNm/A
+        SDO_Write(epos, Max_motor_speed, 0x00, 1000);					//参考电机手册
+		SDO_Write(epos, Q_deceleration, 0x00, QDEC);                    //快速停止负加速度
+		SDO_Write(epos, Profile_Deceleration, 0x00, MAX_DEC);           //快速停止负加速度
+		SDO_Write(epos, Following_error_window, 0x00, MAX_F_ERR);       // Maximal Profile Velocit		
+        SDO_Write(epos, Soft_P_Limit_Min, 0x01, 0x80000000);            //-2147483648
+		SDO_Write(epos, Soft_P_Limit_Max, 0x02, 0x7FFFFFFF);            //2147483647
+		SDO_Write(epos, Max_gear_input_speed, 0x03,1000);
+		SDO_Write(epos,Max_Acceleration,0x00,10000);
+		SDO_Write(epos, Interpolation_Time_index, 0, (uint8_t)-3);
+        SDO_Write(epos, Interpolation_Time_Period_value, 0, 10);		// ms
 		break;
 
 	default:

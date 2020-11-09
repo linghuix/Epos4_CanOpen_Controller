@@ -6,7 +6,7 @@
  * 描述 
  * 调用  
  */
-uint8_t NODE_ID[] = {2,3,4,5,6,7};                          																//EPOS ID
+uint8_t NODE_ID[] = {2,3,4,5,6,7};      //EPOS CAN ID                   																//EPOS ID
 Epos Controller1, Controller2, Controller3, Controller4, Controller5, Controller6;        //控制器对
 Epos *Controller[] = {&Controller1, &Controller2, &Controller3, &Controller4, &Controller5, &Controller6};
 uint8_t NumControllers = 1;
