@@ -32,7 +32,7 @@ void EposMaster_Start(void)
 		
         Epos_init();
 		Epos_PDOConfig();
-        Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
+        Epos_ModeSet(Cyclic_Synchronous_Torque_Mode);
         EPOS_Enable();
 		
 		//printf("waiting\r\n");

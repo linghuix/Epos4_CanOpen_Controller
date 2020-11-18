@@ -23,5 +23,5 @@
 *.uvprojx
 *.uvopt
 *.flyleaf
-USER/DebugConfig/
-PDO/Keil/Objects/
+PDO/Keil/
+SDO/Keil/

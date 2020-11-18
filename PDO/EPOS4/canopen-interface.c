@@ -155,6 +155,7 @@ void sin_cos_test (CO_Data* d)
 	
 }
 
+extern INTEGER16 Torque_SET_VALUE_node1;
 void Test_curve (CO_Data* d)
 {
 	endP = sizeof(test_angle)/sizeof(*test_angle);
@@ -193,8 +194,9 @@ void _post_sync(CO_Data* d)
 	SYNC_MSG("-post_sync-\r\n");
 	//waiting for sensor information
 	//assive(d);
-	sin_cos_test(d);
+//	sin_cos_test(d);
 	//Test_curve(d);
+	Torque_SET_VALUE_node1 = 2;
 
 	#ifdef REMOTE_APP
     if(Stop == 1){

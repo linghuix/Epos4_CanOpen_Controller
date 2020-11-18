@@ -692,66 +692,66 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 /* 0x1A00  Index 1A00h-1BFFh，Transmit PDO Mapping Parameter  Node0*/
 					UNS8 TestMaster_obj1A00_Number_mapped = 1; //服务器，也就是需要修改的节点
 					//UNS32 TestMaster_1_mapped = 0x60400010;
-					UNS32 TestMaster_2_mapped = 0x20610020;
+					UNS32 TestMaster_2_mapped = 0x00210010;
                     subindex TestMaster_Index1A00[] = 
                      {
                        { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A00_Number_mapped, NULL },
                        //{ RO, uint32, sizeof (UNS32), (void*)&TestMaster_1_mapped, NULL },
-                       { RO, uint32, sizeof (UNS32), (void*)&TestMaster_2_mapped, NULL },
+                       { RO, uint16, sizeof (UNS16), (void*)&TestMaster_2_mapped, NULL },
                      };
 
 /* 0x1A01	 Index 1A01h-1BFFh，Transmit PDO Mapping Parameter  Node1*/
 					 UNS8 TestMaster_obj1A01_Number_mapped = 1; //服务器，也就是需要修改的节点
-					 UNS32 TestMaster_obj1A01_2_mapped = 0x20620020;
+					 UNS32 TestMaster_obj1A01_2_mapped = 0x00220010;
 					 subindex TestMaster_Index1A01[] = 
 					 {
 						 { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A01_Number_mapped, NULL },
-						 { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1A01_2_mapped, NULL },
+						 { RO, uint16, sizeof (UNS16), (void*)&TestMaster_obj1A01_2_mapped, NULL },
 					 };
 
 /* 0x1A02	 Index 1A02h-1BFFh，Transmit PDO Mapping Parameter  Node2*/
 					 UNS8 TestMaster_obj1A02_Number_mapped = 1; //服务器，也就是需要修改的节点
-					 UNS32 TestMaster_obj1A02_1_mapped = 0x20630020;
+					 UNS32 TestMaster_obj1A02_1_mapped = 0x00230010;
 					 subindex TestMaster_Index1A02[] = 
 					 {
 						 { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A02_Number_mapped, NULL },
-						 { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1A02_1_mapped, NULL },
+						 { RO, uint16, sizeof (UNS16), (void*)&TestMaster_obj1A02_1_mapped, NULL },
 					 };
 						 
  /* 0x1A03	 Index 1A03h-1BFFh，Transmit PDO Mapping Parameter Node3*/
 					 UNS8 TestMaster_obj1A03_Number_mapped = 1; //服务器，也就是需要修改的节点
-					 UNS32 TestMaster_obj1A03_1_mapped = 0x20640020;
+					 UNS32 TestMaster_obj1A03_1_mapped = 0x00240010;
 					 subindex TestMaster_Index1A03[] = 
 					 {
 						 { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A03_Number_mapped, NULL },
-						 { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1A03_1_mapped, NULL },
+						 { RO, uint16, sizeof (UNS16), (void*)&TestMaster_obj1A03_1_mapped, NULL },
 					 };
 
  /* 0x1A04	 Index 1A04h-1BFFh，Transmit PDO Mapping Parameter Node4*/
 					 UNS8 TestMaster_obj1A04_Number_mapped = 1; //服务器，也就是需要修改的节点
-					 UNS32 TestMaster_obj1A04_1_mapped = 0x20650020;
+					 UNS32 TestMaster_obj1A04_1_mapped = 0x00250010;
 					 subindex TestMaster_Index1A04[] = 
 					 {
 						 { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A04_Number_mapped, NULL },
-						 { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1A04_1_mapped, NULL },
+						 { RO, uint16, sizeof (UNS16), (void*)&TestMaster_obj1A04_1_mapped, NULL },
 					 };
 					 
  /* 0x1A05	 Index 1A05h-1BFFh，Transmit PDO Mapping Parameter Node5*/
 					 UNS8 TestMaster_obj1A05_Number_mapped = 1; //服务器，也就是需要修改的节点
-					 UNS32 TestMaster_obj1A05_1_mapped = 0x20660020;
+					 UNS32 TestMaster_obj1A05_1_mapped = 0x00260010;
 					 subindex TestMaster_Index1A05[] = 
 					 {
 						 { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A05_Number_mapped, NULL },
-						 { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1A05_1_mapped, NULL },
+						 { RO, uint16, sizeof (UNS16), (void*)&TestMaster_obj1A05_1_mapped, NULL },
 					 };
 					 
  /* 0x1A06	 Index 1A06h-1BFFh，Transmit PDO Mapping Parameter Node6*/
 					 UNS8 TestMaster_obj1A06_Number_mapped = 2; //服务器，也就是需要修改的节点
-					 UNS32 TestMaster_obj1A06_1_mapped = 0x20670020;
+					 UNS32 TestMaster_obj1A06_1_mapped = 0x00270010;
 					 subindex TestMaster_Index1A06[] = 
 					 {
 						 { RO, uint8, sizeof (UNS8), (void*)&TestMaster_obj1A06_Number_mapped, NULL },
-						 { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1A06_1_mapped, NULL },
+						 { RO, uint16, sizeof (UNS16), (void*)&TestMaster_obj1A06_1_mapped, NULL },
 					 };
 					 
 /* 0x6040   Controlword */
@@ -861,6 +861,28 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					subindex TestMaster_Index2067[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Pos_SET_VALUE_node7, NULL },};
 
 					
+/*0x0021 node1*/
+					INTEGER16 Torque_SET_VALUE_node1 = 0x0;
+					subindex TestMaster_Index0021[] ={{ RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node1, NULL },};
+/*0x0022 node2*/
+					INTEGER16 Torque_SET_VALUE_node2 = 0x0;
+					subindex TestMaster_Index0022[] ={{ RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node2, NULL },};
+/*0x0023  node3*/
+					INTEGER16 Torque_SET_VALUE_node3 = 0x0;
+					subindex TestMaster_Index0023[] ={{ RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node3, NULL },};	 
+/*0x0024  node4*/
+					INTEGER16 Torque_SET_VALUE_node4 = 0x0;
+					subindex TestMaster_Index0024[] ={{ RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node4, NULL },};			 
+/*0x0025  node5*/
+					INTEGER16 Torque_SET_VALUE_node5 = 0x0;
+					subindex TestMaster_Index0025[] ={ { RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node5, NULL },};
+/*0x0026  node6*/
+					INTEGER16 Torque_SET_VALUE_node6 = 0x0;
+					subindex TestMaster_Index0026[] ={{ RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node6, NULL },};
+/*0x0026  node7*/
+					INTEGER16 Torque_SET_VALUE_node7 = 0x0;
+					subindex TestMaster_Index0027[] ={{ RW, int16, sizeof (INTEGER16), (void*)&Torque_SET_VALUE_node7, NULL },};
+					
 
 					
 /* 0x6077   Current_Actual_Val for node1*/
@@ -947,6 +969,29 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					INTEGER32 Actual_Torque_VALUE_node7 = 0x0;//服务器，也就是需要修改的节点
 					subindex TestMaster_Index0017[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_Torque_VALUE_node7, NULL },};
 
+
+					
+/*0x0031 node1*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node1 = 0x0; 
+					subindex TestMaster_Index0031[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node1, NULL },};
+/*0x0032 node2*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node2 = 0x0; 
+					subindex TestMaster_Index0032[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node2, NULL },};
+/*0x0033  node3*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node3 = 0x0; 
+					subindex TestMaster_Index0033[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node3, NULL },};	 
+/*0x0034  node4*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node4 = 0x0; 
+					subindex TestMaster_Index0034[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node4, NULL },};			 
+/*0x0035  node5*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node5 = 0x0; 
+					subindex TestMaster_Index0035[] ={ { RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node5, NULL },};
+/*0x0036  node6*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node6 = 0x0; 
+					subindex TestMaster_Index0036[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node6, NULL },};
+/*0x0037  node7*/
+					INTEGER32 Actual_AVRVelocity_VALUE_node7 = 0x0; 
+					subindex TestMaster_Index0037[] ={{ RW, int32, sizeof (INTEGER32), (void*)&Actual_AVRVelocity_VALUE_node7, NULL },};
 
 /**************************************************************************/
 /* Declaration of pointed variables                                       */
@@ -1052,6 +1097,29 @@ const indextable TestMaster_objdict[] =
 	{ (subindex*)TestMaster_Index0006,sizeof(TestMaster_Index0006)/sizeof(TestMaster_Index0006[0]), 0x0006},
 	{ (subindex*)TestMaster_Index0007,sizeof(TestMaster_Index0007)/sizeof(TestMaster_Index0007[0]), 0x0007},
 	
+	{ (subindex*)TestMaster_Index0011,sizeof(TestMaster_Index0011)/sizeof(TestMaster_Index0011[0]), 0x0011},//receive actual Torque
+	{ (subindex*)TestMaster_Index0012,sizeof(TestMaster_Index0012)/sizeof(TestMaster_Index0012[0]), 0x0012},
+	{ (subindex*)TestMaster_Index0013,sizeof(TestMaster_Index0013)/sizeof(TestMaster_Index0013[0]), 0x0013},
+	{ (subindex*)TestMaster_Index0014,sizeof(TestMaster_Index0014)/sizeof(TestMaster_Index0014[0]), 0x0014},
+	{ (subindex*)TestMaster_Index0015,sizeof(TestMaster_Index0015)/sizeof(TestMaster_Index0015[0]), 0x0015},
+	{ (subindex*)TestMaster_Index0016,sizeof(TestMaster_Index0016)/sizeof(TestMaster_Index0016[0]), 0x0016},
+	{ (subindex*)TestMaster_Index0017,sizeof(TestMaster_Index0017)/sizeof(TestMaster_Index0017[0]), 0x0017},
+	
+	{ (subindex*)TestMaster_Index0021,sizeof(TestMaster_Index0021)/sizeof(TestMaster_Index0021[0]), 0x0021},//set Torque
+	{ (subindex*)TestMaster_Index0022,sizeof(TestMaster_Index0022)/sizeof(TestMaster_Index0022[0]), 0x0022},
+	{ (subindex*)TestMaster_Index0023,sizeof(TestMaster_Index0023)/sizeof(TestMaster_Index0023[0]), 0x0023},
+	{ (subindex*)TestMaster_Index0024,sizeof(TestMaster_Index0024)/sizeof(TestMaster_Index0024[0]), 0x0024},
+	{ (subindex*)TestMaster_Index0025,sizeof(TestMaster_Index0025)/sizeof(TestMaster_Index0025[0]), 0x0025},
+	{ (subindex*)TestMaster_Index0026,sizeof(TestMaster_Index0026)/sizeof(TestMaster_Index0026[0]), 0x0026},
+	{ (subindex*)TestMaster_Index0027,sizeof(TestMaster_Index0027)/sizeof(TestMaster_Index0027[0]), 0x0027},
+	
+	{ (subindex*)TestMaster_Index0031,sizeof(TestMaster_Index0031)/sizeof(TestMaster_Index0031[0]), 0x0031},//receive actual average velocity
+	{ (subindex*)TestMaster_Index0032,sizeof(TestMaster_Index0032)/sizeof(TestMaster_Index0032[0]), 0x0032},
+	{ (subindex*)TestMaster_Index0033,sizeof(TestMaster_Index0033)/sizeof(TestMaster_Index0033[0]), 0x0033},
+	{ (subindex*)TestMaster_Index0034,sizeof(TestMaster_Index0034)/sizeof(TestMaster_Index0034[0]), 0x0034},
+	{ (subindex*)TestMaster_Index0035,sizeof(TestMaster_Index0035)/sizeof(TestMaster_Index0035[0]), 0x0035},
+	{ (subindex*)TestMaster_Index0036,sizeof(TestMaster_Index0036)/sizeof(TestMaster_Index0036[0]), 0x0036},
+	{ (subindex*)TestMaster_Index0037,sizeof(TestMaster_Index0037)/sizeof(TestMaster_Index0037[0]), 0x0037},
 };
 
 
@@ -1158,6 +1226,30 @@ const indextable * TestMaster_scanIndexOD (CO_Data *d, UNS16 wIndex, UNS32 * err
 		case 0x0005: i = 84;break;
 		case 0x0006: i = 85;break;
 		case 0x0007: i = 86;break;
+		
+		case 0x0011: i = 87;break;
+		case 0x0012: i = 88;break;
+		case 0x0013: i = 89;break;
+		case 0x0014: i = 90;break;
+		case 0x0015: i = 91;break;
+		case 0x0016: i = 92;break;
+		case 0x0017: i = 93;break;
+		
+		case 0x0021: i = 94;break;
+		case 0x0022: i = 95;break;
+		case 0x0023: i = 96;break;
+		case 0x0024: i = 97;break;
+		case 0x0025: i = 98;break;
+		case 0x0026: i = 99;break;
+		case 0x0027: i = 100;break;
+		
+		case 0x0031: i = 101;break;
+		case 0x0032: i = 102;break;
+		case 0x0033: i = 103;break;
+		case 0x0034: i = 104;break;
+		case 0x0035: i = 105;break;
+		case 0x0036: i = 106;break;
+		case 0x0037: i = 107;break;
 		
 		default:
 			*errorCode = OD_NO_SUCH_OBJECT;

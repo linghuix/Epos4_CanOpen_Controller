@@ -119,7 +119,8 @@ void Node_PDOConfig(Epos* epos)
 	SDO_Write(epos,0x14030208,0x01,0x1); 
 	
 	SDO_Write(epos,0x16000008,0x01,0x0); 								//RxPDO map
-	SDO_Write(epos,0x16000120,0x01,Target_pos); 
+//	SDO_Write(epos,0x16000120,0x01,Target_pos); 
+	SDO_Write(epos,0x16000120,0x01,Target_torque);
 	SDO_Write(epos,0x16000008,0x01,0x1); 					
 
 	
@@ -216,7 +217,7 @@ void Node_setMode(Epos* epos, Uint16 mode){
 		SDO_Write(epos, Max_gear_input_speed, 0x03,1000);
 		SDO_Write(epos,Max_Acceleration,0x00,10000);
 		SDO_Write(epos, Interpolation_Time_index, 0, (uint8_t)-3);
-        SDO_Write(epos, Interpolation_Time_Period_value, 0, 10);		// ms
+        SDO_Write(epos, Interpolation_Time_Period_value, 0, 100);		// ms
 		break;
 
 	default:
