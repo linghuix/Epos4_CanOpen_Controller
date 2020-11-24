@@ -19,9 +19,6 @@
 *.zip
 
 *.pc
-*.uvoptx
-*.uvprojx
-*.uvopt
 *.flyleaf
-PDO/Keil/
-SDO/Keil/
+*.dbgconf
+*.Bak
