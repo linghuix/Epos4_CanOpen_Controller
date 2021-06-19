@@ -6,17 +6,19 @@
  * 描述 
  * 调用  
  */
-uint8_t NODE_ID[] = {6,3,4,5,6,7};                          																//EPOS ID
+uint8_t NODE_ID[] = {3,4,5,6,7,7};                          																//EPOS ID
 Epos Controller1, Controller2, Controller3, Controller4, Controller5, Controller6;        //控制器对
 Epos *Controller[] = {&Controller1, &Controller2, &Controller3, &Controller4, &Controller5, &Controller6};
-uint8_t NumControllers = 1;
+uint8_t NumControllers = 4;
 
 
 #include "canopen_interface.h"
 #include "func_CanOpen.h"
 extern uint8_t NumControllers;
-int home[] = {0, 0, 0, 0,0,0};
+int home[] = {0, 0, 0, 0, 0, 0};
 extern int PERIOD ;
+extern int x;
+#define QC_TO_Degree_EC90 4554.0//100*4096*4/360.0//1820.44	 100 REDUCER   4096 ENCODER  
 void EposMaster_Start(void)
 {
 	//uint32_t data[6];
@@ -31,20 +33,37 @@ void EposMaster_Start(void)
 		//OSTimeDlyHMSM(0, 0, 1, 0);
 		
         Epos_init();
-        Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
+        Epos_ModeSet(Profile_Position_Mode);
         EPOS_Enable();
 		
-		//printf("waiting\r\n");
-		/*while(PERIOD == 0){
+		printf("waiting\r\n");
+		while(PERIOD == 0){
 			OSTimeDlyHMSM(0, 0,0,5);
-		}*/
-		
-		for(int i=0;i<NumControllers;i++){
-			//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 700);				//reset speed set slower
-			//Epos_PosSet(Controller[i],home[i]);
 		}
 		
-		OSTimeDlyHMSM(0, 0,5,0);
+		int pos[4]={-33828,127960,46213,35865};
+		int intpos[4];
+//		firstPos(pos);
+		for(int i=0;i<NumControllers;i++){
+			//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 100);				//reset speed set slower
+			SDO_Write(Controller[i], Max_motor_speed, 0x00, 100);					//参考电机手册
+			
+			intpos[i] = pos[i];
+			printf("pos-%d\r\n",intpos[i]);
+			Epos_PosSet(Controller[i], intpos[i]);
+		}
+	
+		OSTimeDlyHMSM(0, 0,10,0);
+		
+		for(int i=0;i<NumControllers;i++){
+			SDO_Write(Controller[i], Max_motor_speed, 0x00, 100);				//reset speed set slower
+			//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 2000);
+		}
+//		
+		x=0;
+		Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
+		
+//        EPOS_Enable();
 		
 		EPOS_PDOEnter();
 	}
@@ -77,6 +96,9 @@ void EposMaster_Start(void)
 
 
 /** Paremeter configure and struct init */
+/**
+ @brief Controller结构体中的参数配置，并写入EPOS4中
+ */
 void Epos_init(void)
 {
     uint8_t i;		                                            //index
@@ -181,7 +203,7 @@ void Epos_SDOSpeedSet(Uint32 speed){
 void EPOS_SetAngle(Epos* epos, Uint32 angle){
     
     #if defined SDO
-    SDO_Write(epos, Position_actual_value, 0x00, angle);
+    SDO_Write(epos, Target_pos, 0x00, angle);
     #endif 
 }
 
@@ -190,9 +212,9 @@ void EPOS_SetAngle(Epos* epos, Uint32 angle){
 void Epos_PosSet(Epos* epos, Uint32 pos)
 {
 
-	 SDO_Write(epos,Position_actual_value ,0x00,0x0F);	
+//	 SDO_Write(epos,Controlword ,0x00,0x0F);	
 	 EPOS_SetAngle(epos,pos);
-	 SDO_Write(epos,Position_actual_value ,0x00,0x7F);	
+	 SDO_Write(epos,Controlword ,0x00,0x3F);	
 }
 
 

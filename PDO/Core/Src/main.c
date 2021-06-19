@@ -126,7 +126,7 @@ void          App_TaskStatHook        (void){
 
 void          App_TaskSwHook          (void){
 	
-	/*printf("\r\n%d:%d->%d\r\n",OSTime,OSTCBCur->OSTCBPrio,OSTCBHighRdy->OSTCBPrio);*/
+//	printf("\r\n%d:%d->%d\r\n",OSTime,OSTCBCur->OSTCBPrio,OSTCBHighRdy->OSTCBPrio);
 
 };
 
