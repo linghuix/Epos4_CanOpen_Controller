@@ -166,7 +166,7 @@ void EPOS_PDOEnter(void)
 	printf("---------NMT -enter into operation-------------\r\n");
 	printf("-----------------------------------------------\r\n");
 	for(int i=0;i<NumControllers;i++){
-		masterNMT(&TestMaster_Data, Controller[i], NMT_Start_Node);	//to operation
+		masterNMT(&TestMaster_Data, Controller[i], NMT_Start_Node);	// NMT state is set to operation
 	}
 }
 

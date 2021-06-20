@@ -117,6 +117,7 @@ extern uint8_t NumControllers;
 #include "conf_epos.h"
 
 /*轨迹曲线队列*/
+extern Epos *Controller[];
 OS_EVENT * Trajectory_Q_1;
 void * trajectoryPointer_1[5];
 trajectory trajectoryBuffer_1[5];
@@ -139,14 +140,18 @@ void Epos_Task(void *p_arg)
             
             if(Continue == 1)
             {
-				Epos_init();
-				Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
-		
+				// 去除报错
+				for(int i=0;i < NumControllers;i++){
+					SDO_Write(Controller[i], Controlword, 0x00, Disable_voltage);
+					SDO_Write(Controller[i], Controlword, 0x00, Fault_Reset); 
+				}
+				// 重新使能EPOS，进入驱动状态
 				EPOS_Enable();
-		
+				// 设置驱动器EPOS NMT state 进入PDO模式
 				EPOS_PDOEnter();
-				
+				// 设置单片机进入PDO发送模式
 		        EPOSMaster_PDOStart();
+				
                 Stop = 0;
                 PeriodRun = 1;
                 Continue = 0;

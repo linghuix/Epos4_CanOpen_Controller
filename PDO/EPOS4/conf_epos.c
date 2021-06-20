@@ -211,12 +211,12 @@ void Node_setMode(Epos* epos, Uint16 mode){
 void Node_OperEn(Epos* epos){
 	
     SDO_Write(epos,Controlword,0x00,Shutdown);                 // Shut down  驱动函数失能
-    Epos_Delay(500);
+    Epos_Delay(50);
 
     //SDO_Read(epos,OD_STATUS_WORD,0x00);                      // Ready to Switch On    Status=0x0121   绿灯闪烁
     
     SDO_Write(epos,Controlword,0x00,Switch_on_Enable_operation);// Switch on AND Enable Operation 驱动参数设定
-    Epos_Delay(500);
+    Epos_Delay(50);
     
     //SDO_Read(epos,OD_STATUS_WORD,0x00);                      // Operation Enable      Status=0x0137   绿灯常亮
 }
