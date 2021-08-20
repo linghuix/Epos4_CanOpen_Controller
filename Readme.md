@@ -6,7 +6,7 @@
 
 # EPOS4  Controller
 
-Implementation of CANopen with STM32f103 for EPOS4 control. 
+Implementation of CANopen with STM32f103 for EPOS4 controlling. 
 
 
 
@@ -16,13 +16,15 @@ Implementation of CANopen with STM32f103 for EPOS4 control.
 
 Test  what you can do with this repository: 
 
-1. add files to Keil
+1. prepare STM32F103 series controller board
 
-<img src="Readme.assets/image-20210820095823748.png" alt="image-20210820095823748" style="zoom:30%;" />  <img src="Readme.assets/image-20210820095839572.png" style="zoom:30%;" />     <img src="Readme.assets/image-20210820095857376.png" style="zoom:30%;" />      
+2. add files to Keil
 
-2. configure CANopen dictionary
+<img src="Readme.assets/image-20210820095823748.png" alt="image-20210820095823748" style="zoom:30%;" /> <img src="Readme.assets/image-20210820095839572.png" style="zoom:30%;" /> <img src="Readme.assets/image-20210820095857376.png" style="zoom:30%;" />      
 
-3. compile and test
+3. configure CANopen dictionary in `Middlewares/CANOpen/Cfg/`
+
+4. compile and test
 
 
 
@@ -47,8 +49,6 @@ If your project is not using STM32F103 series chip for controling:
 
 
 
-
-
 ### CANopen protcol
 
 CANopen is the internationally standardized (EN 50325-4) ([CiA301](http://can-cia.org/standardization/technical-documents)) higher-layer protocol for embedded control system built on top of CAN. For more information on CANopen see http://www.can-cia.org/
@@ -56,6 +56,11 @@ CANopen is the internationally standardized (EN 50325-4) ([CiA301](http://can-ci
 The repository uses [CANfestival](https://canfestival.org/)  to implement CANopen protcol.
 
 
+
+
+### Configure your dictionary automatically
+
+please refer to the documents in [CANfestival](https://canfestival.org/).
 
 
 
@@ -77,7 +82,25 @@ in `dict.c`:
 
 #### SDO
 
-**SDO clit**  Index  0x1800H~0x12FFH
+**SDO server**  Index  0x1200H~0x127FH
+if the control board is not a master, SDO server is mandatory. if is slave, SDO server is not needed.
+
+```c
+/* index 0x1200 :   SDO server parameter */
+UNS8 ServerNumber_0x1200 = 2;						// subindex number -1 
+UNS32 TestMaster_obj1200_COB_ID_SDO_CS_RX  = 0x601;
+UNS32 TestMaster_obj1200_COB_ID_SDO_SC_TX = 0x581;
+subindex TestMaster_Index1200[] =
+ {
+    { RO, uint8,  sizeof (UNS8), (void*)&ServerNumber_0x1200, NULL },
+    { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1200_COB_ID_SDO_CS_RX, NULL },
+    { RO, uint32, sizeof (UNS32), (void*)&TestMaster_obj1200_COB_ID_SDO_SC_TX, NULL }
+ };
+```
+
+
+
+**SDO clit**  Index  0x1280H~0x12FFH
 
 if you have an EPOS4 with node id = 3,  you can configure SDO in `dict.c` as:
 
@@ -159,8 +182,6 @@ subindex TestMaster_Index2061[] = {{ RW, int32, sizeof (INTEGER32), (void*)&Pos_
 
 
 
-
-
 #### RPDO
 
 Index: 0x1400H-0x15FFH
@@ -179,8 +200,6 @@ subindex TestMaster_Index1400[] =
    { RO, uint8, 	sizeof (UNS8), (void*)&TestMaster_obj1400_Transmission_type, NULL },
  };
 ```
-
-
 
 
 
@@ -214,7 +233,7 @@ subindex TestMaster_Index1600[] =
 
 #### Add a new entray
 
-All entries should be registered in `indextable TestMaster_objdict` and `indextable * TestMaster_scanIndexOD`.  Code dtructure refers to:
+All entries should be registered in `indextable TestMaster_objdict` and `indextable * TestMaster_scanIndexOD`.  Entry structure refers to:
 
 ```c
 /*0x2061 node1*/
@@ -228,7 +247,7 @@ subindex TestMaster_Index2061[] = {{ RW, int32, sizeof (INTEGER32), (void*)&Pos_
 
 
 
-#### Other 
+#### Other important things
 
 * `s_PDO_status TestMaster_PDO_status`  counts at which received SYNC a PDO must be sent.
 
@@ -261,14 +280,26 @@ const quick_index TestMaster_lastIndex = {
 
 
 
-
-
-
 ### Hardware
 
 * STM32F103
 
 * EPOS4 50-15
-*  Maxon EC90
 
+* Maxon EC90
+
+
+
+## Examples
+
+
+
+### SDO drive mode
+in `SDO` folder, motor is simply drived by SDO mode without using Festival library, which is useful in uncomplex driving situation.
+
+
+
+
+### PDO drive mode
+in `PDO` folder, motor is  drived by PDO mode with Festival library.
 
