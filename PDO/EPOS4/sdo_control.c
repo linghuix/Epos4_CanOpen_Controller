@@ -50,7 +50,7 @@ uint8_t SDO_Write(Epos* epos,Uint32 Index_Type,Uint8 SubIndex,Uint32 param)
 
 	if (SDO_state == SDO_FINISHED){
 		last_success = 1;
-		MMSG(" node %d write SDO OK! 0x%X\r\n",epos->node_ID, Index_Type);
+		MMSG(" node %d write SDO OK! 0x%X %X\r\n",epos->node_ID, Index_Type, param);
 	}
 	else{
 		last_success = 0;
