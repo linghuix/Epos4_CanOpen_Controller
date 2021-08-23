@@ -243,15 +243,18 @@ void SDO_SpeedTest(void){
 
 
 
-void Epos_PDOConfig(void){
-
+void Epos_PDOConfig(void)
+{
     //NMT_Pre(Controller[1], ALL);                        
-    SDO_Read(Controller[1],Statusword,0x00);
+//    SDO_Read(Controller[1],Statusword,0x00);
 
-    Node_PDOConfig(Controller[1]);
-    SDO_Read(Controller[1],0x1400,0x01);
-    SDO_Read(Controller[1],0x1600,0x00);
-    SDO_Read(Controller[1],0x1600,0x01);
+	for(int i=0;i<NumControllers;i++){
+		Node_PDOConfig(Controller[i]);
+	}
+	
+//    SDO_Read(Controller[1],0x1400,0x01);
+//    SDO_Read(Controller[1],0x1600,0x00);
+//    SDO_Read(Controller[1],0x1600,0x01);
     //NMT_Start(Controller[1], ALL);
 }
 
