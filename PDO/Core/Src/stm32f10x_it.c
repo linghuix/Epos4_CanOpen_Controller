@@ -187,7 +187,9 @@ void CAN1_RX0_IRQHandler(void)
 
 void CAN1_TX_IRQHandler(void)
 {
+	OSIntEnter();
 	HAL_CAN_IRQHandler(&hcan1);
+	OSIntExit();
 }
 
 
@@ -235,13 +237,20 @@ void TIM1_TRG_COM_IRQHandler(void)
 */
 void USART1_IRQHandler(void)
 {
+	OSIntEnter();
 	//HAL_UART_IRQHandler(&huart1);
 	debug_IRQ();
+	OSIntExit();
 }
 
 void USART2_IRQHandler(void)
 {
+	OSIntEnter();
+	
+//	printf("command:\r\n");
 	HAL_UART_IRQHandler(&huart2);
+
+	OSIntExit();
 }
 
 /**

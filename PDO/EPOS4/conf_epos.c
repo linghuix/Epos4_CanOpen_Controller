@@ -23,7 +23,7 @@ void EposMaster_Stop(void)
  *
  */
 
-/*
+/**
  * author lhx
  *
  * @brief : 配置网络EPOS 节点，并且设置最大的跟踪误差，最大的速度、加速度、负加速度，以及快速停止的负加速度设定
@@ -53,7 +53,7 @@ void Node_ParamConfig(Epos* epos)
 }
 
 
-/*
+/**
  * author lhx
  *
  * @brief : 设定EPOS 结构体，并且设置最大的跟踪误差，最大的速度、加速度、负加速度，以及快速停止的负加速度设定
@@ -83,7 +83,7 @@ void Node_StructInit(Epos* epos1, Uint8 CAN_ID, Uint8 NODE_ID)
 
 
 
-/*
+/**
  * author lhx
  *
  * @brief : 打印CAN帧
@@ -151,10 +151,10 @@ void Node_PDOConfig(Epos* epos)
 
 
 
-/*
+/**
  * author lhx
  *
- * @brief : 设置 EPOS node 工作模式, 并配置对应的工作模式
+ * @brief : 设置 EPOS node 工作模式, 并配置Epos对应的工作模式
  * Window > Preferences > C/C++ > Editor > Templates.
  */
 void Node_setMode(Epos* epos, Uint16 mode){
@@ -224,27 +224,35 @@ void Node_setMode(Epos* epos, Uint16 mode){
     }
 }
 
-
+/**
+ @bried 使得EPOS 从开始上电的 Switch on disabled 进入Operation Enable 状态。输入控制目标可立即开始驱动电机
+*/
 void Node_OperEn(Epos* epos){
 	
-    SDO_Write(epos,Controlword,0x00,Shutdown);                    // Shut down  驱动函数失能
-    Epos_Delay(500);
+    SDO_Write(epos,Controlword,0x00,Shutdown);                 // Shut down  驱动函数失能
+    Epos_Delay(50);
 
     //SDO_Read(epos,OD_STATUS_WORD,0x00);                      // Ready to Switch On    Status=0x0121   绿灯闪烁
     
-    SDO_Write(epos,Controlword,0x00,Switch_on_Enable_operation);                    // Switch on AND Enable Operation 驱动参数设定
-    Epos_Delay(500);
+    SDO_Write(epos,Controlword,0x00,Switch_on_Enable_operation);// Switch on AND Enable Operation 驱动参数设定
+    Epos_Delay(50);
     
     //SDO_Read(epos,OD_STATUS_WORD,0x00);                      // Operation Enable      Status=0x0137   绿灯常亮
 }
 
+/**
+ @bried 使得EPOS 从Operation Enable 状态转移到 switched on。 无法驱动电机
+*/
 void Node_DisEn(Epos* epos){
 	
-    SDO_Write(epos,Position_actual_value,0x00,0x06);                    // Disable Operation    Controlword=0xxx 0111
+    SDO_Write(epos,Controlword,0x00,0x06);                    // Disable Operation    Controlword=0xxx 0111
     Epos_Delay(500);
 }
 
 
+/**
+ @bried 延迟 ms
+*/
 void Epos_Delay(Uint32 time){
 	OSTimeDly(time);
 }

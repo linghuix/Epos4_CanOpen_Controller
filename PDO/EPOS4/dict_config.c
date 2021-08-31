@@ -9,6 +9,7 @@ write parameter to Object Dictionary through CAN use SDO messages
 #define MS50 0xC350
 #define MS20 0x4E20
 #define MS100 0x186A0
+#define MS200 0x30D40
 #define MS500 0x7A120
 #define S1 0xF4240
 
@@ -32,6 +33,9 @@ UNS32 Edit_Dict(CO_Data* d, uint32_t Index_Type,uint8_t SubIndex, void* pdata)
 }
 
 
+/**
+ * @brief: 修改 PDO 通讯相关的 字典条目
+ */
 extern CO_Data TestMaster_Data;
 extern UNS32 TestMaster_obj1006;
 void Init_MyDict(void)

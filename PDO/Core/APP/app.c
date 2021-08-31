@@ -117,10 +117,11 @@ extern uint8_t NumControllers;
 #include "conf_epos.h"
 
 /*轨迹曲线队列*/
+extern Epos *Controller[];
 OS_EVENT * Trajectory_Q_1;
 void * trajectoryPointer_1[5];
 trajectory trajectoryBuffer_1[5];
-
+int reset_returnHome = 1;
 void Epos_Task(void *p_arg)
 {
 	//Task_MSG("CANApp_Task ... ");
@@ -139,16 +140,34 @@ void Epos_Task(void *p_arg)
             
             if(Continue == 1)
             {
+				// 去除报错
+				for(int i=0;i < NumControllers;i++){
+					SDO_Write(Controller[i], Controlword, 0x00, Disable_voltage);
+					SDO_Write(Controller[i], Controlword, 0x00, Fault_Reset); 
+				}
+				// 重新使能EPOS，进入驱动状态
+				EPOS_Enable();
+				// 设置驱动器EPOS NMT state 进入PDO模式
+				EPOS_PDOEnter();
+				// 设置单片机进入PDO发送模式
 		        EPOSMaster_PDOStart();
+				
                 Stop = 0;
                 PeriodRun = 1;
                 Continue = 0;
             }
             else if(Reset == 1)
             {
+				
+				if(reset_returnHome){
 			    OSTimeDlyHMSM(0, 0,0,800); 		//waiting for PDO controlling process in EPOS end
+				
+				Epos_init();
+				Epos_ModeSet(Profile_Position_Mode);
+				EPOS_Enable();
+				
 				for(int i= 0;i < NumControllers;i++){
-					masterNMT(&TestMaster_Data, Controller[i], NMT_Enter_PreOperational);	//to operation
+					//masterNMT(&TestMaster_Data, Controller[i], NMT_Enter_PreOperational);	//to operation
 					SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 500);				//reset speed set slower
 				}
 				
@@ -156,24 +175,31 @@ void Epos_Task(void *p_arg)
 				Node_To_Home_Postion(Controller[1]);
 				Node_To_Home_Postion(Controller[2]);
 				Node_To_Home_Postion(Controller[3]);
-				OSTimeDlyHMSM(0, 0, 5,0); 
+				OSTimeDlyHMSM(0, 0, 15,0); 
 				
-				data = SDO_Read(Controller[0], Position_actual_value, 0X00);
+				uint32_t data = SDO_Read(Controller[0], Position_actual_value, 0X00);
 				MSG("get - %x\r\n",data);
 				data = SDO_Read(Controller[1], Position_actual_value, 0X00);
 				MSG("get - %x\r\n",data);
 	            
 				Epos_ModeSet(Cyclic_Synchronous_Position_Mode); //恢复参数
 				//所有全局参数初始化；
+				reset_returnHome = 0;
+				}
 				
 				if(PeriodRun==1){
-					EPOSMaster_PDOStart();
+					Stop = 0;Reset = 0;
+					reset_returnHome  = 1;
+					EposMaster_Start();
 				}
+				
             }
+
         }
-        #endif
+        printf("S%d-P%d-C%d-R%d\r\n", Stop, PeriodRun, Continue , Reset);
+		#endif
 		
-		OSTimeDlyHMSM(0, 0,0,10); 
+		OSTimeDlyHMSM(0, 0,1,0); 
 	}
 }
 
@@ -271,49 +297,59 @@ void RemoteController_Task(void *p_arg)
 	}
 }
 
-uint8_t Stop = 1, PeriodRun = 0, Continue = 0, Reset = 1, StopAReset = 0;
+uint8_t Stop = 0, PeriodRun = 0, Continue = 0, Reset = 0;
 extern int PERIOD,period;	//canopen_interface.c
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == USART2){
 		uint8_t receiveData = remoteData[2];
-		switch(receiveData){
-			case(0x0C):
-				PERIOD = 1;
-				break;
-			case(0x18):
-				PERIOD = 2;
-				break;
-			case(0x19):             //"100+"
-				PERIOD = 600;
-				break;
-			case(0x0D):             //"200+"
-				PERIOD = 1200;
-				break;
-            case(0x07):             //"-"
-                Reset = 1;
-				REMOTE_RECEIVEMSG("Receive Reset\r\n");
-                break;
-            case(0x15):             //"+"
-                Continue = 1;
-				REMOTE_RECEIVEMSG("Receive Continue\r\n");
-                break;
-            case(0x44):             //"prev"
-                Stop = 1;
-                Reset = 1;
-				REMOTE_RECEIVEMSG("Receive StopAReset\r\n");
-                break;
-            case(0xD9):             //"EQ"
-                Stop = 1;
-				REMOTE_RECEIVEMSG("Receive Stop\r\n");
-                break;
-			default:
-				ERROR(10,"error command 0x%X\r\n",receiveData);
+		if(remoteData[0]==0x00 && remoteData[1]==0xFF){
+			switch(receiveData){
+				case(0x0C):
+					PERIOD = 1;
+					PeriodRun = 1;
+					break;
+				case(0x18):
+					PERIOD = 5;
+					PeriodRun = 1;
+					break;
+				case(0x19):             //"100+"
+					PERIOD = 600;
+					PeriodRun = 1;
+					break;
+				case(0x0D):             //"200+"
+					PERIOD = 1200;
+					PeriodRun = 1;
+					break;
+				case(0x07):             // 使用时 Stop = 1, Stop 状态的去除，位于 Epos_Task()
+					if(Stop == 1){
+						Reset = 1;
+					}
+					REMOTE_RECEIVEMSG("Receive Reset\r\n");
+					break;
+				case(0x15):             // 使用时 Stop = 1, Stop 状态的去除，位于 Epos_Task()
+					if(Stop == 1){
+						Continue = 1;
+					}
+					REMOTE_RECEIVEMSG("Receive Continue\r\n");
+					break;
+				case(0x44):             //"prev"
+					Stop = 1;
+					Reset = 1;
+					REMOTE_RECEIVEMSG("Receive StopAReset\r\n");
+					break;
+				case(0xD9):             //"EQ"
+					Stop = 1;
+					PeriodRun = 0;
+					REMOTE_RECEIVEMSG("Receive Stop\r\n");
+					break;
+				default:
+					ERROR(10,"error command 0x%X\r\n",receiveData);
+			}
+			if(PeriodRun == 1){
+				REMOTE_RECEIVEMSG("Receive PeriodRun %d \r\n", PERIOD);
+			}
 		}
-        if(PERIOD > 0){
-            PeriodRun = 1;
-			REMOTE_RECEIVEMSG("Receive PeriodRun %d \r\n", PERIOD);
-        }
 	}
 	HAL_UART_Receive_IT(&huart2, remoteData,3);
 }

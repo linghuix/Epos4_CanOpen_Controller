@@ -61,8 +61,8 @@ void _post_TPDO(CO_Data* d)
 #include "gait.h"
 
 
-#define ARRAY_K   knee_flexion
-#define ARRAY_H   hip_flexion
+#define ARRAY_K   knee
+#define ARRAY_H   hip
 
 int PERIOD = 0;							// 设定运行次数
 int period = 0;						// 实际运行次数
@@ -82,8 +82,9 @@ int Position_int[6];
 int epos_state = 50;
 
 #include "func_CanOpen.h"
-#define QC_TO_Degree_EC90 1//1820.44
+#define QC_TO_Degree_EC90 1//4551.0 //100*4096*4/360.0//1820.44	 100 REDUCER   4096 ENCODER  
 #define QC_TO_Degree_RE40 1//2222.22
+
 void assive (CO_Data* d)
 {
 	if(PERIOD != 0){
@@ -95,7 +96,7 @@ void assive (CO_Data* d)
 		Position[0] = (Uint32)Position_int[0];					//for node2
 		
 		//Position_float[1] = (ARRAY_K[x]*QC_TO_Degree_EC90);
-		Position_int[1] = (ARRAY_K[x]*QC_TO_Degree_EC90);
+		Position_int[1] = (ARRAY_K[x]*-QC_TO_Degree_EC90);
 		Position[1] = (Uint32)Position_int[1];					//for node3 counterclkwise
 		
 		temp_x = x + endP/2;									//start form half period. another side
@@ -108,27 +109,34 @@ void assive (CO_Data* d)
 		Position[2] = (Uint32)Position_int[2];					//for node4
 		
 		//Position_float[3] = (ARRAY_K[temp_x]*QC_TO_Degree_RE40);
-		Position_int[3] = (knee_flexion_RE40[temp_x]*QC_TO_Degree_RE40);
+		Position_int[3] = (ARRAY_K[temp_x]*QC_TO_Degree_EC90);
 		Position[3] = (Uint32)Position_int[3];					//for node5  clkwise
 
-		x++;
-		if( x == endP){
+		x=x+3;
+		if( x >= endP){
 			x = 0;
 			period++;
 			MYMSG("#%d\t%d\r\n",period,PERIOD);
 		}
 		
-		Edit_Dict(d , 0x20620020, 0x00, &Position[0]);//Pos_SET_VALUE node_1
-		Edit_Dict(d , 0x20630020, 0x00, &Position[1]);
-		Edit_Dict(d , 0x20640020, 0x00, &Position[2]);
-		Edit_Dict(d , 0x20650020, 0x00, &Position[3]);
+		Edit_Dict(d , 0x20610020, 0x00, &Position[0]);			//右hip
+		Edit_Dict(d , 0x20660020, 0x00, &Position[1]);			//右knee
+		//Edit_Dict(d , 0x20620020, 0x00, &Position[0]);//Pos_SET_VALUE node_1
+		Edit_Dict(d , 0x20640020, 0x00, &Position[2]);			//左hip
+		Edit_Dict(d , 0x20630020, 0x00, &Position[3]);			//左knee
+
+		//Edit_Dict(d , 0x20650020, 0x00, &Position[3]);
 		
+		ROW_MSG("pos -%d ",x);
 		for(uint8_t i = 0;i<4;i++){
 			ROW_MSG("%d\t", Position_int[i]);
 		}
+		printf("\r\n");
 		//ROW_MSG("%d\t%d\t%d\t%d\r\n",Pos_Actual_Val,Pos_Actual_Val_node3,Pos_Actual_Val_node4, Pos_Actual_Val_node5);
 	}
 }
+
+
 
 Uint32 pos;
 int subI = 0;
@@ -192,17 +200,18 @@ void _post_sync(CO_Data* d)
 	(void)d;
 	SYNC_MSG("-post_sync-\r\n");
 	//waiting for sensor information
-	//assive(d);
-	sin_cos_test(d);
+	assive(d);
+	//sin_cos_test(d);
 	//Test_curve(d);
 
 	#ifdef REMOTE_APP
-    if(Stop == 1){
+    if(Stop == 1){					// 实现快速的停止，其实在EPos task中也有对应的操作，那个不是实时停止的
          EPOSMaster_PDOStop();
-         PeriodRun = 0;
     }
     else if(PeriodRun == 1){
-        if(period > PERIOD){
+        if(period >= PERIOD){
+			PeriodRun = 0;
+			period = 0;				// reset period to 0 for next start
             EPOSMaster_PDOStop();
             Stop = 1;Reset = 1;
         }

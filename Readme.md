@@ -29,7 +29,6 @@ Test  what you can do with this repository:
 
 
 
-
 If your project is not using STM32F103 series chip for controling: 
 
 1. transplant [CANfestival](https://canfestival.org/) to your project
@@ -276,7 +275,6 @@ const quick_index TestMaster_lastIndex = {
   50 /* PDO_TRS_MAP */
 };
 ```
-
 
 
 
