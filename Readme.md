@@ -278,6 +278,11 @@ const quick_index TestMaster_lastIndex = {
 
 
 
+## EPOS firmware
+
+
+## Application Examples
+
 ### Hardware
 
 * STM32F103
@@ -287,17 +292,13 @@ const quick_index TestMaster_lastIndex = {
 * Maxon EC90
 
 
-
-## Examples
-
-
-
 ### SDO drive mode
-in `SDO` folder, motor is simply drived by SDO mode without using Festival library, which is useful in uncomplex driving situation.
 
+In `SDO` folder, motor is simply drived by SDO mode without using Festival library, which is useful in uncomplex driving situation especially when the flash size of contorl board is limited.
 
 
 
 ### PDO drive mode
-in `PDO` folder, motor is  drived by PDO mode with Festival library.
+
+In `PDO` folder, motor is drived by PDO mode with Festival library. This is mainly used in synchronized multi-motor contorl situations. In example of branch `posControl_Exo_V3`, we control six motors with EPOS4 at same time.
 
