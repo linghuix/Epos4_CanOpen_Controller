@@ -278,7 +278,10 @@ const quick_index TestMaster_lastIndex = {
 
 
 
-## EPOS firmware
+## EPOS control flow chart
+
+<img src="Readme.assets/control flow chart.png" style="zoom:80%;" />
+
 
 
 ## Application Examples
