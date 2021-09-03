@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'STM32-DEMO' 
+ * Project: 'SDO' 
  * Target:  'Target 1' 
  */
 

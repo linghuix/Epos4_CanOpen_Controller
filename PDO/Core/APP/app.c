@@ -302,6 +302,10 @@ extern int PERIOD,period;	//canopen_interface.c
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == USART2){
+		
+		for(int i=0;i<3;i++)
+			printf("0X%.2X ", remoteData[i]);
+		
 		uint8_t receiveData = remoteData[2];
 		if(remoteData[0]==0x00 && remoteData[1]==0xFF){
 			switch(receiveData){

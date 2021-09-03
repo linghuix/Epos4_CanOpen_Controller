@@ -17,6 +17,8 @@
 *.txt
 *.XLH
 *.zip
+*.lst
+
 
 *.pc
 *.uvoptx
