@@ -21,9 +21,9 @@
 
 
 *.pc
-*.uvoptx
-*.uvprojx
-*.uvopt
+//*.uvoptx
+//*.uvprojx
+//*.uvopt
 *.flyleaf
 USER/DebugConfig/
 PDO/Keil/Objects/
