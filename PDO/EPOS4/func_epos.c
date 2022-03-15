@@ -32,18 +32,22 @@ void EposMaster_Start(void)
 		//EPOS_NMT_Reset();
 		//OSTimeDlyHMSM(0, 0, 1, 0);
 		
-        Epos_init();
-        Epos_ModeSet(Profile_Position_Mode);
-        EPOS_Enable();
+    Epos_init();
+    Epos_ModeSet(Profile_Position_Mode);
+    EPOS_Enable();
 		
 		printf("waiting\r\n");
+		
+		//		PERIOD = 5;				调试用, 不需要遥控器设置PERIOD就可以直接运行
+		//		PeriodRun = 1;
+		
 		while(PERIOD == 0){
 			OSTimeDlyHMSM(0, 0,0,5);
 		}
 		
 		int pos[4]={-33828,127960,46213,35865};
 		int intpos[4];
-//		firstPos(pos);
+
 		for(int i=0;i<NumControllers;i++){
 			//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 100);				//reset speed set slower
 			SDO_Write(Controller[i], Max_motor_speed, 0x00, 100);					//参考电机手册
@@ -59,11 +63,11 @@ void EposMaster_Start(void)
 			SDO_Write(Controller[i], Max_motor_speed, 0x00, 100);				//reset speed set slower
 			//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, 2000);
 		}
-//		
+
 		x=0;
 		Epos_ModeSet(Cyclic_Synchronous_Position_Mode);
 		
-//        EPOS_Enable();
+    //EPOS_Enable();
 		
 		EPOS_PDOEnter();
 	}
@@ -76,13 +80,13 @@ void EposMaster_Start(void)
 		//SDO_Write(Controller[i], Max_Profile_Velocity, 0x00, MAX_P_V);				//reset to previous speed 
 	}
 	
-	/* 验证是否进入 Operational 模式 */
 	for(int i=0;i<NumControllers;i++){
 		data[i] = SDO_Read(Controller[i], Statusword, 0X00);
 		MSG("state - %x\r\n",data[i]);
 	}
 	
-	//if(((data[0]>>9)&0x01) & ((data[1]>>9)&0x01) & ((data[2]>>9)&0x01) & ((data[3]>>9)&0x01)){
+	/* 验证四个电机是否同时进入 Operational 模式 */
+	if(((data[0]>>9)&0x01) & ((data[1]>>9)&0x01) & ((data[2]>>9)&0x01) & ((data[3]>>9)&0x01)){
 		HAL_TIM_Base_Start_IT(CANOPEN_TIMx_handle);
 		MSG("already start MNT\r\n");
 		printf("-----------------------------------------------\r\n");
@@ -90,7 +94,7 @@ void EposMaster_Start(void)
 		printf("-----------------------------------------------\r\n");
 		//setState(&TestMaster_Data, Pre_operational); //心跳,同步周期协议配置
 		setState(&TestMaster_Data, Operational);
-	//}
+	}
     
 }
 
