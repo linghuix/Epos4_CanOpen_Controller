@@ -303,5 +303,5 @@ In `SDO` folder, motor is simply drived by SDO mode without using Festival libra
 
 ### PDO drive mode
 
-In `PDO` folder, motor is drived by PDO mode with Festival library. This is mainly used in synchronized multi-motor contorl situations. In example of branch `posControl_Exo_V3`, we control six motors with EPOS4 at same time.
+In `PDO` folder, motor is drived by PDO mode with Festival library. This is mainly used in synchronized multi-motor contorl situations. In example of branch `posControl_Exo_V3`, we control six motors with EPOS4 in position control mode at same time.
 
